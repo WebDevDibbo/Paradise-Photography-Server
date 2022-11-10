@@ -39,7 +39,7 @@ async function run(){
 
         app.post('/jwt',async(req,res)=>{
             const user = req.body;
-            const token = jwt.sign(user,process.env.ACCESS_TOKEN_SECRET,{expiresIn:'20 days'})
+            const token = jwt.sign(user,process.env.ACCESS_TOKEN_SECRET)
             res.send({token})
         })
 
@@ -62,11 +62,8 @@ async function run(){
             res.send(service)
         })
         // reviews api
-        app.get('/reviews',verifyJWT, async (req,res)=>{
-            const decoded = req.decoded;
-            if(decoded.email !== req.query.email){
-                   res.status(403).send({message:'unauthorized access'})
-            }
+        app.get('/reviews', async (req,res)=>{
+            
             let query ={}
             if(req.query.email){
                 query= {
